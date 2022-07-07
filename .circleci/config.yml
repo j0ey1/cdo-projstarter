@@ -153,14 +153,14 @@ jobs:
       - notify_on_failure
 
 
-notify_on_sucess:
-  docker:
-    - image: cimg/base:stable
-  steps:
-    - slack/notify:
-        event: pass
-        channel: udapple-cicdpipeline
-        template: success_tagged_deployment_1
+  notify_on_sucess:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - slack/notify:
+          event: pass
+          channel: udapple-cicdpipeline
+          template: success_tagged_deployment_1
 
 workflows:
   default:
