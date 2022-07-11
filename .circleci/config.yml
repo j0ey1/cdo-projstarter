@@ -1,16 +1,38 @@
-
 version: '2.1'
 
-orbs:
-  slack: circleci/slack@4.9.3
-
 commands:
-  notify_on_failure:
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      workflow_id:
+        type: string
     steps:
-      - slack/notify:
-          event: fail
-          channel: udapple-cicdpipeline
-          template: basic_fail_1
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            echo "Destroying environment: << parameters.workflow_id >> "
+            aws s3 rm s3://yhudapeez-222<< parameters.workflow_id >> --recursive
+            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.workflow_id >> 
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.workflow_id >> 
+  revert-migrations:
+    description: Revert the last migration if successfully run in the current workflow.
+    parameters:
+      workflow_id:
+        type: string     
+    steps:
+      - run:
+          name: Revert migrations
+          when: on_fail
+          command: |
+            SUCCESS=$(curl --insecure https://kvdb.io/8vAGYKRiZ2B1ADdG8NoN8H/migration_<< parameters.workflow_id >>)
+            echo $SUCCESS
+            if(( $SUCCESS == 1 )); 
+            then
+              cd backend
+              # npm install
+              npm run migration:revert
+            fi
 
 
 jobs:
@@ -40,7 +62,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - notify_on_failure
+      
 
   build-backend:
     docker:
@@ -68,7 +90,7 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - notify_on_failure
+      
   
   test-frontend:
     docker:
@@ -92,7 +114,7 @@ jobs:
             cd frontend
             npm install
             npm test
-      - notify_on_failure
+      
 
   test-backend:
     docker:
@@ -116,7 +138,7 @@ jobs:
             cd backend
             npm install
             npm test
-      - notify_on_failure
+      
 
   scan-frontend:
     docker:
@@ -132,7 +154,7 @@ jobs:
             npm install
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
-      - notify_on_failure
+      
 
   scan-backend:
     docker:
@@ -149,17 +171,7 @@ jobs:
             npm audit fix --audit-level=critical --force
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
-      - notify_on_failure
-
-
-  notify_on_success:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - slack/notify:
-          event: pass
-          channel: udapple-cicdpipeline
-          template: success_tagged_deployment_1
+      
 
   deploy-infrastructure:
     docker:
