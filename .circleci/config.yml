@@ -383,7 +383,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeoplefend-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
+            URL="http://udapeoplefend-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-sa-east-1.amazonaws.com/#/employees"            
             if curl -s ${URL} | grep "Welcome"
             then
               return 1
@@ -413,7 +413,7 @@ jobs:
   #           aws cloudformation deploy \
   #             --template-file .circleci/files/cloudfront.yml \
   #             --stack-name InitialStack \
-  #             --parameter-overrides WorkflowID="udapeoplefend-${CIRCLE_WORKFLOW_ID:0:7}" \
+  #             --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
   #             --tags project=udapeople
   #     - revert-migrations:
   #         workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
