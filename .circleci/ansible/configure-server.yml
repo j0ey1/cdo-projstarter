@@ -1,6 +1,6 @@
 ---
 
-- name: "configuration for udapeople infrastructure." 
+- name: "configuration play." 
   hosts: web
   user: ubuntu
   become: true
@@ -21,9 +21,31 @@
       raw: test -e /usr/bin/python3 || (apt -y update && apt install -y python3)
       changed_when: false
 
+    - name: "upgrade packages."
+      become: true
+      apt:
+        upgrade: "yes"
+
+    - name: "install dependencies."
+      become: true
+      apt:
+        name: ["nodejs", "npm"]
+        state: latest
+        update_cache: yes
+
+    - name: "install pm2"
+      become: true
+      npm:
+        name: pm2
+        global: yes
+        production: yes
+        state: present
+
+
   # Get the environment variables from CircleCI and add to the EC2 instance
   environment:
     - TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}"  
+    # Add more env vars here
     - TYPEORM_ENTITIES: "{{ lookup('env', 'TYPEORM_ENTITIES')}}"
     - TYPEORM_HOST: "{{ lookup('env', 'TYPEORM_HOST')}}"
     - TYPEORM_PORT: 5432
@@ -35,4 +57,4 @@
 
   roles:
     - configure-server
-    - configure-prometheus-node-exporter
+    # - configure-prometheus-node-exporter
