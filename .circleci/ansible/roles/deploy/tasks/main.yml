@@ -3,7 +3,7 @@
     shell: env
 
   - name: "copy backend binaries"
-    become: true
+    become: yes
     synchronize:
       src: ../../backend/dist
       dest: /home/ubuntu/uda_app
