@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  slack: circleci/slack@4.1
-
 commands:
 
   destroy-environment:
@@ -37,22 +34,6 @@ commands:
               cd backend
               npm run migration:revert
             fi
-
-  notify_slack_error:
-    description: Send alert notifications to slack when there is a job failure.
-    steps:          
-      - slack/notify:
-          channel: $SLACK_DEFAULT_CHANNEL
-          event: fail
-          template: basic_fail_1
-
-  notify_slack_pass:
-    steps:
-      - slack/notify:
-          channel: $SLACK_DEFAULT_CHANNEL
-          event: pass
-          template: basic_success_1
-
 
 jobs:
   build-frontend:
@@ -173,11 +154,7 @@ jobs:
             npm install
             npm audit fix --audit-level=critical --force
             npm audit --audit-level=critical
-            
-      - slack/notify:
-          channel: $SLACK_DEFAULT_CHANNEL
-          event: fail
-          template: basic_fail_1      
+      
 
   scan-backend:
     docker:
@@ -192,14 +169,10 @@ jobs:
             cd backend
             npm install
             npm audit --audit-level=critical
+            npm audit --audit-level=critical --force
       - save_cache:
           paths: [backend/node_modules]
           key: scan-backend      
-
-      - slack/notify:
-          channel: $SLACK_DEFAULT_CHANNEL
-          event: fail
-          template: basic_fail_1
 
   deploy-infrastructure:
     docker:
@@ -482,7 +455,6 @@ workflows:
       - test-backend:
           requires: [build-backend]
       - scan-backend:
-          context: slack_context
           requires: [build-backend]
       - scan-frontend:
           requires: [build-frontend]
@@ -497,7 +469,6 @@ workflows:
       - deploy-backend:
           requires: [run-migrations]
       - smoke-test:
-          context: slack_context
           requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
