@@ -261,7 +261,7 @@ jobs:
           command: |
             cd backend
             npm install
-            npm run migrations --force > migrations_dump.txt
+            npm run migrations > migrations_dump.txt
       - run:
           name: Send migration results to kvdb.io
           command: |
@@ -381,7 +381,7 @@ jobs:
             URL="http://udapeoplefend-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-sa-east-1.amazonaws.com/#/employees"            
             if curl -s ${URL} | grep "Welcome"
             then
-              return 0
+              return 1
             else
               return 1
             fi
