@@ -1,4 +1,4 @@
-version: 2.1
+version: '2.1'
 
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
