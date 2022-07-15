@@ -366,6 +366,19 @@ jobs:
             npm run build
             cd ..
             tar -C backend -czvf artifact.tar.gz .
+
+            echo TYPEORM_CONNECTION=$TYPEORM_CONNECTION > backend/dist/.env.production
+            echo TYPEORM_MIGRATIONS_DIR=$TYPEORM_MIGRATIONS_DIR >> backend/dist/.env.production
+            echo TYPEORM_ENTITIES=$TYPEORM_ENTITIES >> backend/dist/.env.production
+            echo TYPEORM_MIGRATIONS=TYPEORM_MIGRATIONS >> backend/dist/.env.production
+            echo TYPEORM_HOST=$TYPEORM_HOST >> backend/dist/.env.production
+            echo TYPEORM_PORT=$TYPEORM_PORT >> backend/dist/.env.production
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> backend/dist/.env.production
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> backend/dist/.env.production
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> backend/dist/.env.production
+            echo NODE_ENV=production >> backend/dist/.env.production
+            echo ENVIRONMENT=production >> backend/dist/.env.production
+
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
@@ -400,7 +413,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            FRONTEND_WEBSITE=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-${AWS_DEFAULT_REGION}.amazonaws.com/#/employees
+            FRONTEND_WEBSITE=http://udapeoplefend-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-${AWS_DEFAULT_REGION}.amazonaws.com/#/employees
             if curl -s $FRONTEND_WEBSITE | grep "Welcome"
             then
               exit 0
