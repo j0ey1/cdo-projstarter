@@ -45,5 +45,4 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
-        - Key: project
-          Value: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+

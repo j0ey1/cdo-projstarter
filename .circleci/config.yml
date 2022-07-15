@@ -331,7 +331,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible curl rsync openssh nodejs npm
-            pip install awscli
+            pip install awscliv2
             aws --version
       - run:
           name: Deploy backend
@@ -361,7 +361,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update curl nodejs npm
-            pip install awscli
+            pip install awscliv2
 
       - run:
           name: Backend smoke test
