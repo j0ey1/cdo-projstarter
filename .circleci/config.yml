@@ -352,7 +352,7 @@ jobs:
 
   smoke-test:
     docker:
-      - image: python:3.7-alpine3.11 
+      - image: python:alpine3.16 
     steps:
       - checkout
       - attach_workspace:
@@ -373,7 +373,6 @@ jobs:
               --output text
             )
             echo "${BACKEND_IP}"
-
             export API_URL="http://${BACKEND_IP}:3030" 
             echo "${API_URL}"
             if curl "${API_URL}/api/status" | grep "ok"
@@ -381,7 +380,8 @@ jobs:
               return 0
             else
               return 1
-            fi    
+            fi 
+   
       - run:
           name: Frontend smoke test.
           command: |
