@@ -37,11 +37,11 @@ Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
     Properties:
-      InstanceType: t2.micro
+      InstanceType: t2.small
       SecurityGroups:
         - Ref: InstanceSecurityGroup
       KeyName: devops 
-      ImageId: ami-0edc92075724775f7 
+      ImageId: ami-0edc92075724775f7
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
