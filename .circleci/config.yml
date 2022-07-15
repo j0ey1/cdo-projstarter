@@ -227,7 +227,7 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["aa:bc:76:3f:57:34:3d:b9:c0:87:3f:61:3b:72:d8:8f"] 
       - attach_workspace:
-          at: ~/
+          at: .
       - run: 
           name: Show content of inventory.txt
           command: cat .circleci/ansible/inventory.txt
@@ -318,7 +318,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: python:3.10.5-alpine3.16
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
