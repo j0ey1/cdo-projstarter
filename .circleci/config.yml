@@ -499,7 +499,7 @@ workflows:
                       [test-frontend, test-backend, scan-frontend, scan-backend]
                   filters:
                       branches:
-                          only: [main]
+                          only: [dev-branch]
             - configure-infrastructure:
                   requires: [deploy-infrastructure]
             - run-migrations:
