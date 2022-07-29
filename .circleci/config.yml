@@ -201,7 +201,7 @@ jobs:
 
     run-migrations:
         docker: 
-            - image: sleavely/node-awscli:18.x
+            - image: sleavely/node-awscli:12.x
               environment:
                   NODE_ENV: "local"
                   VERSION: "1"
@@ -271,7 +271,7 @@ jobs:
 
     deploy-backend:
         docker:
-            - image: python:3.7.13-alpine3.16
+            - image: python:3.7-alpine3.11
               environment:
                   NODE_ENV: "local"
                   VERSION: "1"
@@ -328,7 +328,7 @@ jobs:
 
     smoke-test:
         docker:
-            - image: python:3.7.13-alpine3.16
+            - image: python:3.7-alpine3.11
               environment:
                   NODE_ENV: "local"
                   VERSION: "1"
