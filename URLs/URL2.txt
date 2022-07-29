@@ -1,3 +1,0 @@
-http://udapeople-f319c2b.s3-website-us-east-1.amazonaws.com
-
-https://d3fkl2nmyu4a6y.cloudfront.net
