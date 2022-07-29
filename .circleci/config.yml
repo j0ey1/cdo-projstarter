@@ -200,7 +200,7 @@ jobs:
                   workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
 
     run-migrations:
-        docker: that supports NodeJS
+        docker: 
             - image: sleavely/node-awscli:18.x
               environment:
                   NODE_ENV: "local"
